@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081411">
+  <meta name="description" content="Cloudveil: Path of Longevity — an original browser-based cultivation RPG. 长生渡 · 云海修真录。">
+  <title>Cloudveil: Path of Longevity · 长生渡</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand" aria-label="长生渡">
+      <div class="brand-seal">長</div>
+      <div class="brand-copy">
+        <div class="brand-name">長生渡</div>
+        <div class="brand-sub">CLOUDVEIL · 云海修真录</div>
+      </div>
+    </div>
+
+    <div class="world-line">
+      <span class="live-dot"></span>
+      <span id="worldDate">云历 · 暮秋</span>
+      <span class="world-divider"></span>
+      <span>云隐山</span>
+      <span class="weather" id="weatherText">山雨欲来</span>
+    </div>
+
+    <div class="top-actions">
+      <div class="top-resource" title="灵石">
+        <span class="resource-gem"></span>
+        <span id="topStones">0</span>
+      </div>
+      <div class="top-resource" title="灵草">
+        <span class="resource-leaf"></span>
+        <span id="topHerbs">0</span>
+      </div>
+      <button class="icon-button" id="soundButton" type="button" aria-label="切换声音">音</button>
+      <button class="icon-button" id="guideButton" type="button" aria-label="查看修行指引">?</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="side-panel character-panel" aria-label="角色信息">
+      <div class="profile-heading">
+        <div class="avatar-ring">
+          <div class="avatar-orbit orbit-one"></div>
+          <div class="avatar-orbit orbit-two"></div>
+          <div class="avatar-core" id="avatarGlyph">沈</div>
+        </div>
+        <div class="identity">
+          <div class="eyebrow"><span id="rootName">剑心道体</span></div>
+          <h2 id="playerName">沈砚</h2>
+          <div class="realm-label" id="realmLabel">炼气一层</div>
+          <div class="affiliation-line">
+            <span id="sectLabel">云隐剑宗 · 外门弟子</span>
+            <i></i>
+            <span id="companionLabel">尚无同心人</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="cultivation-block">
+        <div class="section-label">
+          <span>气海修为</span>
+          <span class="tnum" id="expText">0 / 74</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill exp-fill" id="expFill"></div>
+          <div class="progress-glint"></div>
+        </div>
+        <div class="dual-bars">
+          <div class="vital-row">
+            <span>气血</span>
+            <div class="mini-track"><div class="mini-fill hp-fill" id="hpFill"></div></div>
+            <b class="tnum" id="hpText">140 / 140</b>
+          </div>
+          <div class="vital-row">
+            <span>灵力</span>
+            <div class="mini-track"><div class="mini-fill mana-fill" id="manaFill"></div></div>
+            <b class="tnum" id="manaText">60 / 60</b>
+          </div>
+        </div>
+      </section>
+
+      <section class="resource-section">
+        <div class="resource-tile">
+          <span class="tile-glyph stone-glyph">晶</span>
+          <div><small>灵石</small><strong id="stonesValue">120</strong></div>
+        </div>
+        <div class="resource-tile">
+          <span class="tile-glyph herb-glyph">草</span>
+          <div><small>灵草</small><strong id="herbsValue">8</strong></div>
+        </div>
+        <div class="resource-tile wide">
+          <span class="tile-glyph insight-glyph">悟</span>
+          <div><small>悟道点</small><strong id="insightValue">2</strong></div>
+        </div>
+      </section>
+
+      <section class="attribute-section">
+        <div class="section-heading">
+          <span>道体根基</span>
+          <span class="quiet" id="cultivationRate">1.6 修为/息</span>
+        </div>
+        <div class="attribute-grid">
+          <div><span>攻伐</span><strong id="attackValue">16</strong></div>
+          <div><span>护体</span><strong id="defenceValue">10</strong></div>
+          <div><span>会心</span><strong id="critValue">8%</strong></div>
+          <div><span>身法</span><strong id="dodgeValue">4%</strong></div>
+        </div>
+      </section>
+
+      <section class="pill-section">
+        <div class="section-heading">
+          <span>随身丹囊</span>
+          <span class="quiet">点击服用</span>
+        </div>
+        <div class="pill-row">
+          <button class="pill-chip" type="button" data-use-pill="gather" title="服用聚气丹，立即获得修为">
+            <span>聚</span><b id="pillGather">1</b>
+          </button>
+          <button class="pill-chip" type="button" data-use-pill="heal" title="服用回春丹，恢复气血">
+            <span>愈</span><b id="pillHeal">1</b>
+          </button>
+          <button class="pill-chip" type="button" data-use-pill="clarity" title="服用凝神丹，获得悟道点">
+            <span>悟</span><b id="pillClarity">0</b>
+          </button>
+          <button class="pill-chip" type="button" data-use-pill="break" title="破境丹会在冲击瓶颈时自动服用">
+            <span>破</span><b id="pillBreak">0</b>
+          </button>
+        </div>
+        <p class="pill-note">破境丹于突破时自动使用，每枚增势一成八。</p>
+      </section>
+
+      <div class="profile-foot">
+        <span class="save-state"><i></i><span id="saveText">待入道途</span></span>
+        <span id="dayCounter">第 1 日</span>
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <div class="page-area">
+        <section class="view active" id="view-home" aria-label="洞府">
+          <div class="home-grid">
+            <article class="hero-scene" id="heroScene">
+              <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+              <div class="sky-aurora" aria-hidden="true"></div>
+              <div class="moon">
+                <span class="moon-cloud"></span>
+              </div>
+              <div class="cloud cloud-one" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="cloud cloud-two" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="cloud cloud-three" aria-hidden="true"><i></i><i></i></div>
+
+              <svg class="ink-mountains" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+                <defs>
+                  <linearGradient id="farMountain" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#4c7872" stop-opacity=".27"/>
+                    <stop offset="1" stop-color="#0a1a18" stop-opacity=".05"/>
+                  </linearGradient>
+                  <linearGradient id="midMountain" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#163c35" stop-opacity=".78"/>
+                    <stop offset="1" stop-color="#061511" stop-opacity=".98"/>
+                  </linearGradient>
+                  <linearGradient id="nearMountain" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#0b2822"/>
+                    <stop offset="1" stop-color="#020c0a"/>
+                  </linearGradient>
+                  <linearGradient id="waterfall" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#d7f0e3" stop-opacity=".75"/>
+                    <stop offset="1" stop-color="#7bb49e" stop-opacity="0"/>
+                  </linearGradient>
+                  <filter id="mistBlur">
+                    <feGaussianBlur stdDeviation="12"/>
+                  </filter>
+                </defs>
+                <path fill="url(#farMountain)" d="M0 480L100 420L168 452L274 292L337 361L411 331L505 430L579 390L688 482L759 415L850 453L955 267L1020 353L1101 321L1220 451L1290 405L1392 449L1488 339L1600 422V760H0Z"/>
+                <path fill="#071915" opacity=".64" d="M0 520L97 469L168 497L242 440L312 507L403 468L489 525L601 471L681 511L755 474L848 524L927 453L1010 482L1097 426L1165 507L1251 464L1358 522L1435 472L1517 513L1600 475V760H0Z"/>
+                <path fill="url(#midMountain)" d="M0 621L103 559L214 585L302 473L377 532L444 514L541 608L661 536L763 589L852 538L964 615L1064 526L1132 574L1202 503L1290 586L1388 546L1476 591L1551 552L1600 571V760H0Z"/>
+                <path fill="url(#nearMountain)" d="M0 710L99 650L198 683L303 618L392 657L484 602L577 667L685 631L770 690L861 635L958 690L1067 619L1164 664L1266 591L1362 640L1464 611L1554 658L1600 633V760H0Z"/>
+                <path d="M858 267L846 374L857 486" stroke="url(#waterfall)" stroke-width="9" opacity=".6"/>
+                <path d="M879 338L868 432" stroke="url(#waterfall)" stroke-width="4" opacity=".4"/>
+                <g fill="#d7eee7" opacity=".55">
+                  <circle cx="256" cy="295" r="2"/><circle cx="487" cy="208" r="1.5"/>
+                  <circle cx="1140" cy="238" r="2"/><circle cx="1278" cy="185" r="1.3"/>
+                  <circle cx="719" cy="151" r="1.2"/><circle cx="1418" cy="310" r="1.7"/>
+                </g>
+                <g stroke="#91b4a6" fill="none" opacity=".18">
+                  <path d="M78 568q21-35 42 0q20-45 42 0"/>
+                  <path d="M1371 531q18-33 36 0q18-38 37 0"/>
+                  <path d="M1192 559q15-27 30 0q14-33 31 0"/>
+                </g>
+                <path d="M0 628Q314 580 590 632T1180 607T1600 640V760H0Z" fill="#d9eee4" opacity=".04" filter="url(#mistBlur)"/>
+              </svg>
+
+              <div class="scene-topline">
+                <span class="location-tag"><i></i>云隐山 · 听雨洞府</span>
+                <span class="scene-clock" id="sceneClock">酉时 · 微雨</span>
+              </div>
+
+              <div class="scene-copy">
+                <span class="scene-kicker">一念入道，万息归元</span>
+                <div class="scene-realm">
+                  <span id="sceneRealm">炼气</span><strong id="sceneLayer">一层</strong>
+                </div>
+                <p id="sceneQuote">道在天地，亦在一呼一吸之间。</p>
+                <div class="scene-tags">
+                  <span id="sceneRate">吐纳 · 1.6 修为/息</span>
+                  <span id="buffTag" class="hidden">丹药相助</span>
+                </div>
+              </div>
+
+              <div class="mobile-hud">
+                <div><span>修为</span><b id="mobileExp">0 / 74</b></div>
+                <div><span>灵石</span><b id="mobileStones">120</b></div>
+                <div><span>悟道</span><b id="mobileInsight">2</b></div>
+              </div>
+
+              <div class="cultivator-stage" aria-hidden="true">
+                <div class="halo halo-back"></div>
+                <div class="halo halo-front"></div>
+                <div class="qi-orbit"><i></i><i></i><i></i></div>
+                <svg class="cultivator" viewBox="0 0 320 390">
+                  <defs>
+                    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#1e5c4e"/>
+                      <stop offset=".55" stop-color="#0b2c25"/>
+                      <stop offset="1" stop-color="#04130f"/>
+                    </linearGradient>
+                    <linearGradient id="robeLight" x1="0" y1="0" x2="1" y2=".2">
+                      <stop offset="0" stop-color="#7ac4a5" stop-opacity=".72"/>
+                      <stop offset="1" stop-color="#17382f" stop-opacity="0"/>
+                    </linearGradient>
+                    <filter id="figureGlow">
+                      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                  </defs>
+                  <ellipse cx="160" cy="346" rx="104" ry="20" fill="#000" opacity=".36"/>
+                  <path d="M160 45C121 45 93 76 93 115C93 138 103 158 120 172L107 213C73 226 48 253 44 291C40 327 55 348 78 355L160 330L242 355C265 348 280 327 276 291C272 253 247 226 213 213L200 172C217 158 227 138 227 115C227 76 199 45 160 45Z" fill="url(#robe)" stroke="#80a994" stroke-opacity=".32" stroke-width="1.4"/>
+                  <path d="M106 180C86 217 74 258 81 320L124 337L160 293L196 337L239 320C246 258 234 217 214 180C192 210 128 210 106 180Z" fill="#08211a" stroke="#70a58f" stroke-opacity=".22"/>
+                  <path d="M119 199C133 219 187 219 201 199" fill="none" stroke="#93c2ad" stroke-opacity=".38"/>
+                  <path d="M124 67C137 53 183 53 196 67C207 83 207 132 196 150C181 164 139 164 124 150C112 130 112 84 124 67Z" fill="#081b16"/>
+                  <path d="M126 89C130 63 147 50 160 48C173 50 190 63 194 89C183 76 174 75 160 83C146 75 137 76 126 89Z" fill="#0e2a22"/>
+                  <path d="M124 98L134 102M196 98L186 102" stroke="#afbda9" stroke-opacity=".44" stroke-width="2"/>
+                  <path d="M143 117C153 122 168 122 178 116" stroke="#d4b87e" stroke-opacity=".55" fill="none" stroke-width="1.2"/>
+                  <path d="M160 88V147" stroke="#76a58e" stroke-opacity=".2"/>
+                  <path d="M95 165L160 291L225 165" fill="none" stroke="#98c1ae" stroke-opacity=".24"/>
+                  <path d="M88 220C72 249 69 284 82 326M232 220C248 249 251 284 238 326" fill="none" stroke="url(#robeLight)" stroke-width="2"/>
+                  <g filter="url(#figureGlow)" opacity=".85">
+                    <path d="M59 128L253 320" stroke="#c6a56a" stroke-width="2.2"/>
+                    <path d="M60 128l-11-12 6 17 8 4 5-6z" fill="#d9bf86"/>
+                    <path d="M253 320l9 10" stroke="#c6a56a" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M229 225l18-43 13 4-16 44z" fill="#d0b374" opacity=".72"/>
+                  </g>
+                  <path d="M146 252C152 279 168 279 174 252" fill="none" stroke="#d5bd83" stroke-opacity=".34"/>
+                  <path d="M139 282C151 290 169 290 181 282" fill="none" stroke="#78a990" stroke-opacity=".22"/>
+                  <circle cx="160" cy="285" r="7" fill="#c8ae73" opacity=".46"/>
+                </svg>
+                <div class="ground-mist"></div>
+              </div>
+
+              <div class="hero-controls">
+                <button class="ritual-button" id="cultivateButton" type="button" data-cultivate>
+                  <span class="ritual-glyph">炁</span>
+                  <span class="ritual-copy">
+                    <strong id="cultivateTitle">运转周天</strong>
+                    <small>+<span id="manualGain">16</span> 修为 · 空格</small>
+                  </span>
+                  <span class="ritual-shine"></span>
+                </button>
+                <button class="breakthrough-button hidden" id="breakthroughButton" type="button" data-breakthrough>
+                  <span class="break-kicker">气海盈满</span>
+                  <strong>冲击瓶颈</strong>
+                  <small>成功率 <span id="breakChance">86%</span> · 破境丹自动使用</small>
+                </button>
+              </div>
+
+              <div class="scene-progress">
+                <span>周天</span>
+                <div><i id="sceneExpFill"></i></div>
+                <b id="sceneExpPercent">0%</b>
+              </div>
+            </article>
+
+            <div class="quick-actions" aria-label="快捷行动">
+              <button class="quick-card" type="button" data-view="adventure">
+                <span class="quick-icon sword-icon">剑</span>
+                <span class="quick-copy"><strong>下山历练</strong><small>斩妖试剑 · 寻获资源</small></span>
+                <span class="quick-key">2</span>
+              </button>
+              <button class="quick-card" id="fortuneButton" type="button" data-fortune>
+                <span class="quick-icon fortune-icon">缘</span>
+                <span class="quick-copy"><strong>寻访机缘</strong><small id="fortuneHint">崖下似有异香</small></span>
+                <span class="quick-key">F</span>
+              </button>
+              <button class="quick-card" type="button" data-view="alchemy">
+                <span class="quick-icon cauldron-icon">丹</span>
+                <span class="quick-copy"><strong>开炉炼丹</strong><small>灵草化药 · 辅助修行</small></span>
+                <span class="quick-key">6</span>
+              </button>
+              <button class="quick-card" type="button" data-view="techniques">
+                <span class="quick-icon scroll-icon">诀</span>
+                <span class="quick-copy"><strong>参悟功法</strong><small>以悟道点淬炼根基</small></span>
+                <span class="quick-key">5</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-adventure" aria-label="历练">
+          <div class="page-scroll adventure-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">山河万里 · 皆可问道</span>
+                <h1>下山历练</h1>
+                <p>妖兽守宝，险境藏缘。胜负系于道体，亦系于出剑时机。</p>
+              </div>
+              <div class="heading-seal">战</div>
+            </header>
+            <div class="zone-list" id="zoneList"></div>
+            <div class="combat-tip">
+              <span class="tip-mark">诀</span>
+              <p><strong>战后所得</strong>：斩妖可获得修为、灵石与灵草，首次击败新妖物另有悟道点。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-sect" aria-label="宗门">
+          <div class="page-scroll sect-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">一纸山门令 · 半生同道情</span>
+                <h1>宗门录</h1>
+                <p>宗门给修行者一个归处，也把责任、传承与纷争一并交到手中。</p>
+              </div>
+              <div class="heading-seal">宗</div>
+            </header>
+            <div id="sectContent"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-companions" aria-label="道侣">
+          <div class="page-scroll companion-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">山长水远 · 愿有同行</span>
+                <h1>同心录</h1>
+                <p>有人与你论剑，有人替你温药，也有人只在天星明灭时等你归来。</p>
+              </div>
+              <div class="heading-seal">缘</div>
+            </header>
+            <div id="companionContent"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-techniques" aria-label="功法">
+          <div class="page-scroll techniques-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">法由心生 · 道随境长</span>
+                <h1>参悟功法</h1>
+                <p>吐纳聚气，剑意破敌。悟道点来之不易，每一次参悟都会改变修行路径。</p>
+              </div>
+              <div class="heading-seal">法</div>
+            </header>
+            <div class="insight-banner">
+              <span class="insight-orb">悟</span>
+              <div><small>可用悟道点</small><strong id="largeInsight">2</strong></div>
+              <p>突破境界、斩获强敌与服用凝神丹均可获得悟道点。</p>
+            </div>
+            <div class="technique-grid" id="techniqueGrid"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-alchemy" aria-label="丹房">
+          <div class="page-scroll alchemy-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">采天地精粹 · 炼一炉造化</span>
+                <h1>云隐丹房</h1>
+                <p>灵草在炉火中化作丹药。修为尚浅时，先以聚气丹与回春丹固本。</p>
+              </div>
+              <div class="heading-seal">炉</div>
+            </header>
+            <div class="alchemy-hero">
+              <div class="cauldron-art" id="cauldronArt">
+                <div class="cauldron-fire"></div>
+                <svg viewBox="0 0 220 220" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="bronze" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#c7b076"/>
+                      <stop offset=".42" stop-color="#625942"/>
+                      <stop offset="1" stop-color="#1f352c"/>
+                    </linearGradient>
+                    <radialGradient id="cauldronGlow">
+                      <stop offset="0" stop-color="#8ce1bc" stop-opacity=".8"/>
+                      <stop offset="1" stop-color="#4fb58f" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="110" cy="119" r="77" fill="url(#cauldronGlow)" opacity=".16"/>
+                  <path d="M54 76H166L157 145C153 165 138 178 110 187C82 178 67 165 63 145Z" fill="url(#bronze)" stroke="#b9ceb7" stroke-opacity=".35"/>
+                  <ellipse cx="110" cy="76" rx="56" ry="16" fill="#253a30" stroke="#d1bd86" stroke-opacity=".55"/>
+                  <ellipse cx="110" cy="74" rx="43" ry="9" fill="#081511"/>
+                  <path d="M77 96Q110 107 143 96M72 115Q110 128 148 115M75 137Q110 149 145 137" fill="none" stroke="#d2be88" stroke-opacity=".24"/>
+                  <path d="M55 80C26 77 30 112 60 106M165 80C194 77 190 112 160 106" fill="none" stroke="#97835d" stroke-width="7" stroke-linecap="round"/>
+                  <path d="M87 185L81 204M133 185L139 204" stroke="#8e7a55" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M89 61C77 42 95 38 88 19M111 58C101 35 122 32 112 8M133 61C123 46 143 39 135 25" fill="none" stroke="#b9e2ce" stroke-width="2" opacity=".5"/>
+                </svg>
+              </div>
+              <div class="alchemy-status">
+                <span class="eyebrow">炉火状态</span>
+                <h2 id="alchemyStatusTitle">文火温养</h2>
+                <p>炉中松炭正红，投入灵草后约需一息成丹。悟性越高，成丹时偶有双份。</p>
+                <div class="alchemy-materials">
+                  <span>灵石 <b id="alchemyStones">120</b></span>
+                  <span>灵草 <b id="alchemyHerbs">8</b></span>
+                </div>
+              </div>
+            </div>
+            <div class="recipe-grid" id="recipeGrid"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-path" aria-label="道途">
+          <div class="page-scroll path-page">
+            <header class="page-heading">
+              <div>
+                <span class="eyebrow">步步履尘 · 久久为功</span>
+                <h1>道途录</h1>
+                <p>你走过的每一段路，都在气海中留下回响。</p>
+              </div>
+              <div class="heading-seal">道</div>
+            </header>
+
+            <div class="journey-stats">
+              <div><small>累计突破</small><strong id="statBreakthroughs">0</strong></div>
+              <div><small>斩妖数</small><strong id="statKills">0</strong></div>
+              <div><small>成丹数</small><strong id="statAlchemy">0</strong></div>
+              <div><small>奇遇数</small><strong id="statFortunes">0</strong></div>
+              <div><small>宗门差遣</small><strong id="statSectMissions">0</strong></div>
+              <div><small>同心之人</small><strong id="statBond">0</strong></div>
+            </div>
+
+            <div class="path-columns">
+              <section>
+                <div class="section-heading big-heading">
+                  <span>道心印记</span>
+                  <span class="quiet" id="achievementCount">0 / 10</span>
+                </div>
+                <div class="achievement-list" id="achievementList"></div>
+              </section>
+              <section class="settings-panel">
+                <div class="section-heading big-heading"><span>洞府杂记</span></div>
+                <div class="setting-row">
+                  <div><strong>清音</strong><small>吐纳与斗法的轻响</small></div>
+                  <button class="toggle-button active" id="soundToggle" type="button" aria-pressed="true"><i></i><span>已开启</span></button>
+                </div>
+                <div class="setting-row">
+                  <div><strong>止水</strong><small>减少云气与粒子运动</small></div>
+                  <button class="toggle-button" id="motionToggle" type="button" aria-pressed="false"><i></i><span>已关闭</span></button>
+                </div>
+                <div class="setting-row">
+                  <div><strong>存档</strong><small>进度自动保存在此浏览器</small></div>
+                  <span class="save-badge" id="settingsSave">自动存档</span>
+                </div>
+                <div class="lore-card">
+                  <span class="lore-mark">序</span>
+                  <p>三千年前，天门闭绝。山河灵气渐复，凡人与妖物皆在残存的古道中寻觅长生的门径。而你，只是云隐山中一名初入道途的弟子。</p>
+                </div>
+                <button class="text-button danger" id="resetButton" type="button">散尽前尘 · 重新入道</button>
+              </section>
+            </div>
+            <p class="copyright-note">本作世界观、文字与美术均为原创虚构；仅在题材上化用东方修真文学的共同意象。</p>
+          </div>
+        </section>
+      </div>
+
+      <nav class="bottom-dock" aria-label="主要界面">
+        <button class="dock-button active" type="button" data-view="home">
+          <span class="dock-glyph">府</span><span>洞府</span><small>1</small>
+        </button>
+        <button class="dock-button" type="button" data-view="adventure">
+          <span class="dock-glyph">山</span><span>历练</span><small>2</small>
+        </button>
+        <button class="dock-button" type="button" data-view="sect">
+          <span class="dock-glyph">宗</span><span>宗门</span><small>3</small>
+        </button>
+        <button class="dock-button" type="button" data-view="companions">
+          <span class="dock-glyph">缘</span><span>道侣</span><small>4</small>
+        </button>
+        <button class="dock-button" type="button" data-view="techniques">
+          <span class="dock-glyph">诀</span><span>功法</span><small>5</small>
+        </button>
+        <button class="dock-button" type="button" data-view="alchemy">
+          <span class="dock-glyph">丹</span><span>丹房</span><small>6</small>
+        </button>
+        <button class="dock-button" type="button" data-view="path">
+          <span class="dock-glyph">录</span><span>道途</span><small>7</small>
+        </button>
+        <div class="dock-line">
+          <span>心诀</span>
+          <q id="dockQuote">守一抱元，气自周天。</q>
+        </div>
+      </nav>
+    </section>
+
+    <aside class="side-panel journal-panel" aria-label="修行手札">
+      <div class="journal-heading">
+        <div>
+          <span class="eyebrow">山雨入夜 · 灯下观心</span>
+          <h2>修真手札</h2>
+        </div>
+        <span class="ink-mark">記</span>
+      </div>
+
+      <section class="objective-card">
+        <div class="objective-top">
+          <span class="objective-label">当前道途</span>
+          <span class="objective-index" id="goalIndex">壹</span>
+        </div>
+        <h3 id="goalTitle">静心吐纳</h3>
+        <p id="goalText">让真气在经脉中行满一周天。</p>
+        <div class="objective-progress">
+          <div><i id="goalFill"></i></div>
+          <span id="goalProgress">0%</span>
+        </div>
+        <button class="objective-action" id="goalAction" type="button" data-goal>继续修行 <span>↗</span></button>
+      </section>
+
+      <section class="log-section">
+        <div class="section-heading">
+          <span>山中纪事</span>
+          <span class="live-label"><i></i>随行</span>
+        </div>
+        <div class="event-log" id="eventLog" aria-live="polite"></div>
+      </section>
+
+      <footer class="journal-footer">
+        <div class="ink-landscape" aria-hidden="true"></div>
+        <p id="journalQuote">“心静，则万籁皆寂。”</p>
+        <span>云隐山 · 听雨洞府</span>
+      </footer>
+    </aside>
+  </main>
+
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-mountains" aria-hidden="true">
+      <div class="intro-moon"></div>
+      <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMax slice">
+        <path fill="#183a32" opacity=".72" d="M0 565L110 496L226 540L314 390L398 482L510 426L620 544L723 451L833 527L967 338L1059 444L1163 391L1288 526L1401 453L1507 513L1600 463V800H0Z"/>
+        <path fill="#071713" d="M0 680L105 608L212 648L320 562L426 632L525 581L634 664L756 586L871 651L988 547L1098 630L1206 572L1318 651L1425 593L1530 648L1600 618V800H0Z"/>
+        <path fill="none" stroke="#88b39e" stroke-opacity=".3" d="M1210 553L1202 690"/>
+      </svg>
+    </div>
+    <div class="intro-mist"></div>
+    <div class="intro-shell">
+      <section class="intro-lore">
+        <div class="intro-title">
+          <span class="intro-seal">長</span>
+          <div><h1>長生渡</h1><p>CLOUDVEIL · 云海修真录</p></div>
+        </div>
+        <span class="intro-eyebrow">原创东方修真 · 放置成长</span>
+        <blockquote>天门已闭三千年。<br>有人说长生只是虚妄，<br>也有人说，道就在下一次吐纳之间。</blockquote>
+        <p class="intro-desc">你自凡尘而来，拜入云隐山。炼气、筑基、金丹、元婴……每一次破境，都会让山河在你眼中变得不同。</p>
+        <div class="intro-features">
+          <span><i>息</i>自动吐纳</span>
+          <span><i>剑</i>手动斗法</span>
+          <span><i>宗</i>宗门晋升</span>
+          <span><i>缘</i>道侣同行</span>
+          <span><i>道</i>本地存档</span>
+        </div>
+        <div class="intro-verse">“朝闻道，夕可死矣；<br>既未闻道，且向长生。”</div>
+      </section>
+      <section class="character-create">
+        <div class="create-step"><span>壹</span><strong>留名</strong></div>
+        <label class="name-field">
+          <span>道号</span>
+          <input id="nameInput" type="text" maxlength="10" value="沈砚" autocomplete="off" spellcheck="false">
+          <i>不超过十字</i>
+        </label>
+
+        <div class="create-step"><span>贰</span><strong>择道体</strong></div>
+        <div class="root-options" id="rootOptions">
+          <button class="root-card" type="button" data-root="sword">
+            <span class="root-emblem">剑</span>
+            <span class="root-copy">
+              <strong>剑心道体</strong>
+              <small>攻伐 +25% · 会心 +5%</small>
+              <em>天生近剑，一叶亦可斩风。</em>
+            </span>
+            <i class="root-check">选</i>
+          </button>
+          <button class="root-card active" type="button" data-root="spirit">
+            <span class="root-emblem">炁</span>
+            <span class="root-copy">
+              <strong>清和灵根</strong>
+              <small>吐纳 +35% · 破境 +3%</small>
+              <em>五气清和，最宜循序渐进。</em>
+            </span>
+            <i class="root-check">选</i>
+          </button>
+          <button class="root-card" type="button" data-root="chaos">
+            <span class="root-emblem">玄</span>
+            <span class="root-copy">
+              <strong>混沌灵根</strong>
+              <small>吐纳 +12% · 气运高涨</small>
+              <em>诸法皆可亲近，奇遇更易显现。</em>
+            </span>
+            <i class="root-check">选</i>
+          </button>
+        </div>
+        <button class="start-button" id="startButton" type="button">
+          <span>踏 入 仙 途</span><small>游戏自动保存于本地浏览器</small>
+        </button>
+      </section>
+    </div>
+    <div class="intro-foot">一念凡尘 · 一念长生</div>
+  </div>
+
+  <div class="battle-overlay hidden" id="battleOverlay" role="dialog" aria-modal="true" aria-labelledby="battleTitle">
+    <div class="battle-shell">
+      <div class="battle-topbar">
+        <span class="battle-location"><i></i><span id="battleZone">青崖山脉</span></span>
+        <span class="battle-round">交锋 · 第 <b id="battleRound">1</b> 合</span>
+        <button class="battle-retreat" id="battleRetreat" type="button">收剑遁走</button>
+      </div>
+      <div class="battle-arena" id="battleArena">
+        <div class="battle-sigil" aria-hidden="true">斗</div>
+        <div class="arena-mountains" aria-hidden="true"></div>
+        <section class="combatant player-combatant" id="playerCombatant">
+          <div class="combatant-label"><span>云隐弟子</span><strong id="battlePlayerName">沈砚</strong></div>
+          <div class="fighter-avatar player-fighter"><span id="battlePlayerGlyph">沈</span><i></i></div>
+          <div class="hp-label"><span>气血</span><b id="battlePlayerHp">140 / 140</b></div>
+          <div class="battle-hp"><i id="battlePlayerHpFill"></i></div>
+          <div class="battle-mana"><span>灵力</span><div><i id="battleManaFill"></i></div><b id="battleManaText">60 / 60</b></div>
+        </section>
+        <div class="versus-mark">
+          <span></span><b id="battleRoundMark">初</b><span></span>
+        </div>
+        <section class="combatant enemy-combatant" id="enemyCombatant">
+          <div class="combatant-label"><span id="enemyKind">山野妖物</span><strong id="battleTitle">灰耳妖狼</strong></div>
+          <div class="fighter-avatar enemy-fighter"><span id="enemyGlyph">狼</span><i></i></div>
+          <div class="hp-label"><span>妖躯</span><b id="battleEnemyHp">95 / 95</b></div>
+          <div class="battle-hp enemy-hp"><i id="battleEnemyHpFill"></i></div>
+          <div class="enemy-trait" id="enemyTrait">狡黠 · 伺机而动</div>
+        </section>
+        <div class="float-layer" id="floatLayer"></div>
+      </div>
+      <div class="battle-bottom">
+        <div class="battle-log" id="battleLog" aria-live="polite"></div>
+        <div class="battle-actions" id="battleActions">
+          <button type="button" class="battle-action primary" data-battle-action="strike">
+            <span>斩</span><strong>寻常剑击</strong><small>稳中求胜</small>
+          </button>
+          <button type="button" class="battle-action" data-battle-action="skill">
+            <span>诀</span><strong>青莲剑诀</strong><small>耗灵 22</small>
+          </button>
+          <button type="button" class="battle-action" data-battle-action="channel">
+            <span>息</span><strong>调息回元</strong><small>恢复灵力</small>
+          </button>
+          <button type="button" class="battle-action" data-battle-action="pill">
+            <span>丹</span><strong>服用回春丹</strong><small>余 <b id="battlePillCount">1</b> 枚</small>
+          </button>
+        </div>
+        <div class="battle-result hidden" id="battleResult">
+          <span id="battleResultKicker">胜</span>
+          <h2 id="battleResultTitle">剑落妖伏</h2>
+          <p id="battleResultText">山风掠过剑锋，天地重新归于安静。</p>
+          <div class="battle-rewards" id="battleRewards"></div>
+          <button id="battleCloseButton" type="button">收剑归山</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="breakthroughModal" role="dialog" aria-modal="true" aria-labelledby="breakthroughTitle">
+    <div class="meditation-modal">
+      <div class="breakthrough-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="modal-seal" id="breakthroughSeal">破</span>
+      <span class="eyebrow" id="breakthroughKicker">道心叩问</span>
+      <h2 id="breakthroughTitle">气海翻涌</h2>
+      <p id="breakthroughText">周身经脉同时一震，旧境似薄纸，只待最后一念。</p>
+      <div class="breakthrough-chance" id="breakthroughChanceBlock">
+        <span>破境之势</span><b id="breakthroughChanceText">86%</b>
+      </div>
+      <button class="modal-primary" id="breakthroughConfirm" type="button">一念破关</button>
+      <p class="modal-note" id="breakthroughNote">失败会散去部分修为，但不会损伤道基。</p>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="guide-modal">
+      <button class="modal-close" id="guideClose" type="button" aria-label="关闭">×</button>
+      <span class="eyebrow">云隐山入门手札</span>
+      <h2 id="guideTitle">修行四要</h2>
+      <div class="guide-grid">
+        <article><span>一</span><h3>吐纳不辍</h3><p>修为每秒自动增长，点击“运转周天”或以空格键吐纳，可快速积攒修为。</p></article>
+        <article><span>二</span><h3>气满破境</h3><p>气海盈满后即可冲击瓶颈。境界越高，破境越难；破境丹可增加成功率。</p></article>
+        <article><span>三</span><h3>下山试剑</h3><p>与妖兽交锋可获灵石、灵草和修为。青莲剑诀伤害更高，但会消耗灵力。</p></article>
+        <article><span>四</span><h3>参悟丹道</h3><p>在功法页消耗悟道点强化四门根基；在丹房炼制修行所需的丹药。</p></article>
+        <article><span>五</span><h3>宗门立身</h3><p>完成宗门差遣积累声望与贡献，晋升弟子位阶，并兑换传承物资。</p></article>
+        <article><span>六</span><h3>道侣同心</h3><p>与相遇之人论道、赠礼、同游。心意相通后可结为道侣，获得专属同行增益。</p></article>
+      </div>
+      <div class="shortcut-list">
+        <span><kbd>空格</kbd>吐纳</span><span><kbd>B</kbd>破境</span>
+        <span><kbd>F</kbd>机缘</span><span><kbd>1—7</kbd>切换界面</span>
+      </div>
+      <button class="modal-primary" id="guideStart" type="button">記下了</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <div class="breakthrough-flash" id="breakthroughFlash" aria-hidden="true"></div>
+  <script src="game.js"></script>
+</body>
+</html>
