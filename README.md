@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/screenshots/02-home.jpg" alt="Cloudveil cultivation dashboard" width="100%">
+  <img src="docs/screenshots/02-home.jpg" alt="Cloudveil paper-and-ink cultivation dashboard" width="100%">
 </p>
 
 # Cloudveil: Path of Longevity
@@ -28,7 +28,7 @@
 
 **Cloudveil: Path of Longevity** is a single-page xianxia-inspired cultivation game. Turn every breath into progress, challenge beasts, climb through nine realms, gain standing in a sect, brew pills, and find someone to share the long road with.
 
-《长生渡》是一款以东方玄幻修真为灵感的单页浏览器游戏。吐纳炼气、下山历练、宗门晋升、炼丹寻缘，在九大境界与八十一个小境界中一路问道长生。
+《长生渡》是一款以东方玄幻修真为灵感的单页浏览器游戏。吐纳炼气、下山历练、宗门晋升、炼丹寻缘，在九大境界与八十一个小境界中一路问道长生。界面以宣纸、墨线、青黛与朱砂为骨架，像翻阅一册会随修行展开的山门手札。
 
 The game has no backend, package manager, build step, external image service, or online account requirement. Progress is stored locally in the browser.
 
@@ -126,7 +126,7 @@ Battles use a turn-based action flow. Basic attacks are reliable, sword techniqu
 ## Technical Overview / 技术概览
 
 - **HTML5** for the application structure
-- **CSS3** for the ink-wash visual system, layout, and responsive design
+- **CSS3** for the paper-and-cinnabar visual system, layout, and responsive design
 - **Vanilla JavaScript** for game simulation, combat, economy, saving, and UI rendering
 - **Canvas** for ambient qi particles
 - **Web Audio API** for lightweight procedural sound
@@ -142,7 +142,9 @@ No frameworks, no build step, no runtime dependencies.
 ```text
 cloudveil-longevity/
 ├── index.html                 # Game shell and UI structure
-├── styles.css                # Ink-wash theme and responsive layout
+├── favicon.svg               # Cinnabar seal site icon
+├── styles.css                # Base components and responsive layout
+├── paper-theme.css           # Rice-paper and cinnabar visual layer
 ├── game.js                   # Game state, progression, combat, and saves
 ├── docs/
 │   └── screenshots/          # README screenshots

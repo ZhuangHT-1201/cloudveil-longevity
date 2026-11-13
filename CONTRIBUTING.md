@@ -23,11 +23,12 @@ Thank you for helping improve **Cloudveil: Path of Longevity**.
 - Keep world-building, dialogue, names, and art original.
 - Do not copy protected text or distinctive settings from published novels, games, or films.
 - Use xianxia concepts as general genre inspiration rather than reproducing a specific work.
-- Preserve the bilingual project identity and the existing visual language.
+- Preserve the bilingual project identity and the paper, ink, and cinnabar visual language.
 
 ## Code style
 
 - Use plain HTML, CSS, and JavaScript unless a larger architectural change is agreed upon.
+- Keep new interface work consistent with `paper-theme.css` rather than adding unrelated visual systems.
 - Prefer clear function names over abbreviations.
 - Keep browser APIs progressive and avoid introducing a build requirement for the playable game.
 - Do not commit secrets, personal save data, or generated credentials.
