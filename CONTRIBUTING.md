@@ -1,7 +1,6 @@
 # Contributing to Cloudveil
 
 Thank you for helping improve **Cloudveil: Path of Longevity**.
-感谢你参与《长生渡》的开发。
 
 ## Ways to contribute
 
@@ -23,7 +22,7 @@ Thank you for helping improve **Cloudveil: Path of Longevity**.
 - Keep world-building, dialogue, names, and art original.
 - Do not copy protected text or distinctive settings from published novels, games, or films.
 - Use xianxia concepts as general genre inspiration rather than reproducing a specific work.
-- Preserve the bilingual project identity and the paper, ink, and cinnabar visual language.
+- Preserve the paper, ink, and cinnabar visual language.
 
 ## Code style
 
